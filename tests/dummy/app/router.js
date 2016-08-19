@@ -7,6 +7,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.mount('ember-static-blog', { path: 'blog' });
 });
 
 export default Router;
