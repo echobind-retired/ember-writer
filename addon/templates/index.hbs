@@ -1,0 +1,9 @@
+<div class="posts">
+  {{#each model as |post|}}
+    <article>
+      {{#link-to 'post' post}}
+        {{post.slug}}
+      {{/link-to}}
+    </article>
+  {{/each}}
+</div>
