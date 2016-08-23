@@ -1,8 +1,8 @@
 ---
 title: Starting a Phoenix Project with Docker
 date: 2016-08-11
-tags: phoenix, docker, ember
-author: robert-beene
+tags: phoenix, docker
+author: Robert Beene
 ---
 Before I setup a new Dockerfile for a new technology stack, I like to map out how I would do this without Docker. How would I set this up if I didn't mind muddying my host OS with a given technology? READMORE
 

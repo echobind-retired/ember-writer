@@ -7,6 +7,7 @@ const BlogMarkdownParser = require('./lib/blog-markdown-parser');
 const path = require('path');
 const fs = require('fs-extra');
 const _array = require('lodash/array');
+const _string = require('lodash/string');
 
 module.exports = {
   name: 'ember-static-blog',
@@ -44,24 +45,17 @@ module.exports = {
     fs.writeJsonSync(`${blogPath}/posts.json`, this.markdownParser.parsedPosts);
 
     // tags
-    let counts = {};
-
-    console.log(this.markdownParser.parsedPosts);
     let tags = this.markdownParser.parsedPosts.reduce((prev, post) => {
       let tags = post.attributes.tags.split(/,\s*/);
       return prev.concat(tags);
     }, []);
 
-
-    tags.forEach((tag) => {
-      let count = counts[tag] || 0;
-      counts[tag] = count += 1;
-    });
+    let tagCounts = itemCounts(tags);
 
     let uniqueTags = _array.uniq(tags).map((tag) => {
       return {
         name: tag,
-        count: counts[tag]
+        postCount: tagCounts[tag]
       };
     });
 
@@ -72,6 +66,38 @@ module.exports = {
       return prev.concat(post.attributes.author);
     }, []);
 
-    fs.writeJsonSync(`${blogPath}/authors.json`, _array.uniq(authors));
+    // add post counts to author data
+    let authorDataFile = `${blogPath}/data/authors.json`;
+    let authorCounts = itemCounts(authors);
+    let authorData = fs.readJsonSync(authorDataFile);
+
+    let authorsWithCounts = authors.map((name) => {
+      let author = authorData.find((a) => a.name == name);
+
+      if (!author) {
+        throw(new Error(`${name} is an author of a post but is not a known author. Please add an entry to \`data/authors.json\` for them.`));
+        return;
+      }
+
+      author.postCount = authorCounts[name];
+
+      return author;
+    });
+
+    fs.writeJsonSync(`${blogPath}/authors.json`, authorsWithCounts);
+
+    // TODO: avoid creating this file in the final build in the first place
+    fs.remove(authorDataFile);
   }
 };
+
+function itemCounts(array) {
+  let counts = {};
+
+  array.forEach((thing) => {
+    let count = counts[thing] || 0;
+    counts[thing] = count += 1;
+  });
+
+  return counts;
+}

@@ -1,3 +1,4 @@
+{{!-- TODO: components --}}
 <div class="posts">
   {{#each model as |post|}}
     <article>
@@ -8,6 +9,12 @@
       </h3>
 
       {{{post.summary}}}
+
+      <div class="info">
+        <span class="by-line">{{post.attributes.author}}</span>
+        <span class="separator">-</span>
+        <span class="date">{{post.attributes.date}}</span>
+      </div>
     </article>
   {{/each}}
 </div>
