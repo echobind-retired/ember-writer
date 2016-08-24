@@ -1,5 +1,5 @@
 {
-  "name": "ember-static-blog",
+  "name": "ember-writer",
   "version": "0.0.0",
   "description": "The default blueprint for ember-cli addons.",
   "directories": {
@@ -41,7 +41,11 @@
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "blog",
+    "blogging",
+    "engine",
+    "markdown"
   ],
   "dependencies": {
     "broccoli-filter": "^1.2.4",

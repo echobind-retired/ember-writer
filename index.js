@@ -10,7 +10,7 @@ const _array = require('lodash/array');
 const _string = require('lodash/string');
 
 module.exports = {
-  name: 'ember-static-blog',
+  name: 'ember-writer',
 
   included(app) {
     if (app.project.pkg['ember-addon'] && !app.project.pkg['ember-addon'].paths) {

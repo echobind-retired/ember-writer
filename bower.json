@@ -1,5 +1,5 @@
 {
-  "name": "ember-static-blog",
+  "name": "ember-writer",
   "dependencies": {
     "ember": "beta",
     "ember-cli-shims": "0.1.1",
