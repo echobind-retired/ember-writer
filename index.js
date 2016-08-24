@@ -40,8 +40,7 @@ module.exports = {
   postBuild(result) {
     let blogPath = path.join(result.directory, 'api', 'blog');
 
-    // blog index page
-    // TODO: pagination
+    // posts
     fs.writeJsonSync(`${blogPath}/posts.json`, this.markdownParser.parsedPosts);
 
     // tags
