@@ -1,7 +1,10 @@
-import Ember from 'ember';
+import Route from 'ember-route';
+import service from 'ember-inject/service';
 
-export default Ember.Route.extend({
+export default Route.extend({
+  ajax: service(),
+
   model() {
-    return Ember.$.get('/api/blog/posts.json');
+    return this.get('ajax').request('/api/blog/posts.json');
   }
 });
