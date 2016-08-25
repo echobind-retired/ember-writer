@@ -1,0 +1,10 @@
+<ul class="authors">
+  {{#each model as |author|}}
+    <li class="author">
+      <img src={{author.image}}>
+      <span class="name">{{author.name}}</span>
+      <span class="spacer"></span>
+      <span class="count">{{author.postCount}}</span>
+    </li>
+  {{/each}}
+</ul>

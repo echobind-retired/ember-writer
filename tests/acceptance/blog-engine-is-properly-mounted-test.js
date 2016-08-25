@@ -51,4 +51,15 @@ describe('Acceptance: Blog engine is properly mounted', function() {
       expect(currentURL()).to.equal('/blog/another-test');
     });
   });
+
+  describe('viewing authors', function() {
+    beforeEach(function() {
+      visit('/blog/authors');
+    });
+
+    it('shows a list of authors', function() {
+      let authors = find('.author');
+      expect(authors).to.have.length(2);
+    });
+  });
 });
