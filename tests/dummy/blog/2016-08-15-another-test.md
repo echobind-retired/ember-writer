@@ -7,6 +7,8 @@ author: Chris Ball
 
 ember-cli ships with QUnit as the default testing framework. If you'd like to move to Mocha here's a quick reference on how to do so. READMORE
 
+-- THIS SHOULD NOT SHOW IN SUMMARY --
+
 <span class="badges">![ember version badge](https://embadge.io/v1/badge.svg?start=1.13.0)</span>
 
 ##### Why Mocha?

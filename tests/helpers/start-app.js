@@ -1,6 +1,6 @@
 import Application from '../../app';
 import config from '../../config/environment';
-import assign from 'ember-platform/assign';
+import { assign } from 'ember-platform';
 import run from 'ember-runloop';
 
 export default function startApp(attrs) {

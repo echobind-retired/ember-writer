@@ -1,10 +1,8 @@
 import Route from 'ember-route';
-import service from 'ember-inject/service';
+import request from 'ember-ajax/request';
 
 export default Route.extend({
-  ajax: service(),
-
   model({ slug }) {
-    return this.get('ajax').request(`/api/blog/posts/${slug}.json`);
+    return request(`/api/blog/posts/${slug}.json`);
   }
 });

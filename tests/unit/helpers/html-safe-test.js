@@ -8,10 +8,13 @@ import {
   htmlSafe
 } from 'ember-writer/helpers/html-safe';
 
+import Ember from 'ember';
+const { Handlebars } = Ember;
+const { SafeString } = Handlebars;
+
 describe('HtmlSafeHelper', function() {
-  // Replace this with your real tests.
-  it('works', function() {
-    let result = htmlSafe(42);
-    expect(result).to.be.ok;
+  it('returns a SafeString', function() {
+    let result = htmlSafe('<div>blah</div>');
+    expect(result instanceof SafeString).to.be.ok;
   });
 });
