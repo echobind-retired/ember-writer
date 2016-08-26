@@ -55,7 +55,7 @@ If we start our server, we'll see a bunch of QUnit errors.
 ember test --server
 ```
 
-```txt
+```sh
 TEST'EM 'SCRIPTS!
 Open the URL below in a browser to connect.
 http://localhost:7357/

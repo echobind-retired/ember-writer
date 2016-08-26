@@ -20,12 +20,12 @@ To install Phoenix, we must first have [elixir](http://elixir-lang.org/install.h
 
 #### OS X
 
-```shell
+```bash
 brew install elixir
 ```
 
 #### Ubuntu
-```shell
+```bash
 wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
 sudo apt-get update
 sudo apt-get install esl-erlang
@@ -40,7 +40,7 @@ Once this is installed we'll have access to the mix command.
 
 We'll need to install hex (a package manager) and rebar (used to build Erlang packages)
 
-```shell
+```bash
 mix local.hex
 mix local.rebar
 ```
@@ -48,26 +48,26 @@ mix local.rebar
 ##### Phoenix
 Finally, we can install Phoenix.
 
-```shell
+```bash
  mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez
 ```
 
 ##### Hello World
 We can start a new project by running the follow command to generate an app called "hello_world".
 
-```shell
+```bash
  mix phoenix.new hello_world
 ```
 
 This will generate the basic framework of an application. At completion, you'll be prompted on whether or not to install dependencies which would run the following.
 
-```shell
+```bash
 mix deps.get
 ```
 
 This will also compile your assets using [Brunch.io](brunch.io) which uses npm. This means this is also a requirement if you don't specify --no-brunch when creating your application.
 
-```shell
+```bash
 mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez --no-brunch
 ```
 
@@ -77,7 +77,7 @@ Finally, we'll create our database and then run our application. If you see the 
 
 ![database missing](../images/phoenix_docker/database_missing.png)
 
-```shell
+```bash
 mix ecto.create # database creation
 mix phoenix.server
 ```
@@ -203,7 +203,7 @@ Now that we have this file in place, we can begin setting things in motion.
 
 ##### Build
 
-```shell
+```bash
 docker-compose up -d
 docker-compose run web mix phoenix.new hello_world
 mv hello_world/* ./
