@@ -28,7 +28,8 @@ module.exports = {
     }
 
     let blogFiles = new Funnel(this.blogDirectory, {
-      destDir: 'api/blog'
+      destDir: 'api/blog',
+      include: ['*.md']
     });
 
     this.markdownParser = new BlogMarkdownParser(blogFiles);
@@ -66,9 +67,9 @@ module.exports = {
     }, []);
 
     // add post counts to author data
-    let authorDataFile = `${blogPath}/data/authors.json`;
+    let authorDataFile = `${this.blogDirectory}/data/authors`;
+    let authorData = require(authorDataFile);
     let authorCounts = itemCounts(authors);
-    let authorData = fs.readJsonSync(authorDataFile);
 
     let authorsWithCounts = authors.map((name) => {
       let author = authorData.find((a) => a.name == name);
@@ -84,9 +85,6 @@ module.exports = {
     });
 
     fs.writeJsonSync(`${blogPath}/authors.json`, authorsWithCounts);
-
-    // TODO: avoid creating this file in the final build in the first place
-    fs.remove(authorDataFile);
   }
 };
 
