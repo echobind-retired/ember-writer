@@ -1,16 +1,17 @@
-{{!-- TODO: components --}}
 <div class="posts">
   {{#each model as |post|}}
-    <article>
-      <h3>
+    <article class={{post.slug}}>
+      <h3 class="post-title">
         {{#link-to 'post' post}}
           {{post.attributes.title}}
         {{/link-to}}
       </h3>
 
-      {{{post.summary}}}
+      <div class="post-summary">
+        {{html-safe post.summary}}
+      </div>
 
-      <div class="info">
+      <div class="post-info">
         <span class="by-line">{{post.attributes.author}}</span>
         <span class="separator">-</span>
         <span class="date">{{post.attributes.date}}</span>

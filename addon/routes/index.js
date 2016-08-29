@@ -1,9 +1,8 @@
-import Ember from 'ember';
+import Route from 'ember-route';
+import request from 'ember-ajax/request';
 
-export default Ember.Route.extend({
-  // TODO: support pagination
-  // /api/posts/2.json
+export default Route.extend({
   model() {
-    return Ember.$.get('/api/blog/posts.json');
+    return request('/api/blog/posts.json');
   }
 });
