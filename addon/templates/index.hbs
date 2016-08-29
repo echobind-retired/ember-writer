@@ -11,11 +11,7 @@
         {{html-safe post.summary}}
       </div>
 
-      <div class="post-info">
-        <span class="by-line">{{post.attributes.author}}</span>
-        <span class="separator">-</span>
-        <span class="date">{{post.attributes.date}}</span>
-      </div>
+      {{article-info article=post}}
     </article>
   {{/each}}
 </div>

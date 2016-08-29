@@ -1,10 +1,6 @@
 <article>
   <h3>{{model.attributes.title}}</h3>
-  <div class="info">
-    <span class="by-line">{{model.attributes.author}}</span>
-    <span class="separator">-</span>
-    <span class="date">{{model.attributes.date}}</span>
-  </div>
+  {{article-info article=model}}
 
   {{article-content content=model.body}}
 </article>

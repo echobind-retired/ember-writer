@@ -18,6 +18,16 @@ module.exports = {
     } else {
       this.blogDirectory = path.join(this.app.project.root, '/blog');
     }
+
+    this.addonConfig = app.project.config(process.env.EMBER_ENV).emberWriter || {};
+  },
+
+  config: function(/*environment, appConfig*/) {
+    return {
+      'emberWriter': {
+        dateFormat: 'MM-DD-YYYY'
+      }
+    };
   },
 
   treeForPublic(tree) {
@@ -31,7 +41,7 @@ module.exports = {
       destDir: 'api/blog'
     });
 
-    this.markdownParser = new BlogMarkdownParser(blogFiles);
+    this.markdownParser = new BlogMarkdownParser(blogFiles, this.addonConfig);
     trees.push(this.markdownParser);
 
     return new MergeTrees(trees);
