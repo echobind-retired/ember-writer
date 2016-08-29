@@ -20,6 +20,7 @@ describe('Acceptance: Blog engine is properly mounted', function() {
     destroyApp(application);
   });
 
+  // NOTE: Article fixtures are in `dummy/blog`
   describe('visiting /blog', function() {
     beforeEach(function() {
       visit('/blog');
