@@ -7,11 +7,6 @@ const moment = require('moment');
 module.exports = {
   description: 'Generates a new blog article',
 
-  // normalizeEntityName: function(name) {
-  //   return name;
-  //   // return name.dasherize();
-  // },
-
   fileMapTokens: function() {
     return {
       __blogDir__: function(options) {
@@ -38,8 +33,4 @@ module.exports = {
       title: options.entity.name
     };
   }
-
-  // afterInstall: function(options) {
-  //   // Perform extra work here.
-  // }
 };

@@ -3,8 +3,6 @@
 
 const BlogMarkdownParser = require('../../lib/blog-markdown-parser');
 const expect = require('chai').expect;
-const fs = require('fs-extra');
-const path = require('path');
 
 let parser;
 describe('BlogMarkdownParser', function() {
