@@ -10,74 +10,96 @@ Ember writer can help.
 
 Features:
 * Parses posts written in Markdown format with support for YAML frontmatter
-* Written as an engine to mount a fully featured blog at the path of your choosing
-* Builds a static API for posts with pagination, tags, and authors
-* Includes syntax highlighting for code blocks
+* Written as an engine to mount a fully featured blog at any path
+* Builds a static API for articles, tags, and authors
+* Includes syntax highlighting for code blocks via highlightjs
 
 ## Getting Started
 
-* Install the addon (`ember install ember-writer`)
-* Mount the blog engine at the desired path:
+NOTE: This addon requires engines, so your app **must be running Ember 2.8 beta or later**.
+
+#### Install the addon
+```sh
+ember install ember-writer
+```
+
+#### Mount the blog engine at the desired path:
 ```js
 Router.map(function() {
   this.mount('ember-writer', { path: 'blog' });
 });
 ```
-* Generate a new blog post:
+
+#### Generate a new blog post:
 ```sh
 ember g blog-post "My Amazing Post Title"
 ```
-* Add additional writers to `blog/data/authors.json`:
-```json
-[
+
+#### Add additional writers to `blog/data/authors.js`:
+```js
+/*jshint node:true*/
+
+module.exports = [
   {
-    "name": "Mr Robot",
-    "image": "https://images.bwwstatic.com/tvshowlogos/F90CFD8D-FF12-4B44-B4F22FFF6E594964.jpg"
+    name: "Chris Ball",
+    image: "https://www.gravatar.com/avatar/6254dc2b7e4f26b2ab5d05c560834671?s=400",
+    twitter: "cball_",
+    github: "cball"
   }
-]
+];
 ```
 
 ## Configuring Ember Writer
-TODO
-- permalink URL (defaults to {mount path}/{article slug})
-- default date format (defaults to MM)
-- articles per page (defaults to all)
+Ember writer will place a config file at `config/ember-writer`. Uncomment or change any of these lines to set config options.
+
+```js
+// config/ember-writer.js
+/*jshint node:true*/
+
+// Use this file to configure Ember Writer. Commented lines are the defaults.
+
+module.exports = {
+  // dateFormat: 'MM-DD-YYYY'
+};
+```
 
 ## Article Summaries
-TODO
-- Supports article summaries via READMORE keyword
+Article summaries are supported by the `READMORE` keyword, which is stripped
+from the full article body:
+
+```md
+---
+title: Draft Article
+date: Tue Aug 30 2016 12:19:38 GMT-0400 (EDT)
+author: Chris Ball
+---
+
+I'm a **new** article summary! READMORE
+
+This is the main body:
+```
+
+If you don't supply `READMORE`, article summary will truncate at 250 characters.
 
 ## Draft Articles
-TODO
-- published: false
-- future date
+Create draft articles using `published: false` in the frontmatter:
+
+```md
+---
+title: Draft Article
+date: Tue Aug 30 2016 12:19:38 GMT-0400 (EDT)
+author: Chris Ball
+published: false
+---
+```
+
+Draft articles are visible in the development environment only.
 
 ## Syntax Highlighting
-TODO
-
-## Pagination
-TODO
-
-## Tags
-TODO
-
-## Adding Author Data
-TODO
+Syntax highlighting is provided by highlightjs. Add theme styles to your app (see the dummy app for an example).
 
 ## Customizing templates
-TODO
-- Override info (post component template, post-list component template, entire templates)
-
-## Included helpers
-TODO
-- sort-by?
-
-## Adding additional data
-TODO
-- talk about data folder
-
-## Possible Future Plans
-- Adapter for local blog or remote blog
+To customize article templates, generate a template of the same name in your application. Note: this addon is currently under heavy development, so expect the template structure to change.
 
 ## License
 
