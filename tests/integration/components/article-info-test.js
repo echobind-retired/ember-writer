@@ -9,6 +9,7 @@ import {
   beforeEach
 } from 'mocha';
 import hbs from 'htmlbars-inline-precompile';
+import { formatDate } from 'ember-writer/helpers/format-date';
 
 describeComponent(
   'article-info',
@@ -18,11 +19,13 @@ describeComponent(
   },
   function() {
     describe('article with author and date attributes', function() {
+      let date = new Date('2015-06-22');
+
       beforeEach(function() {
         this.set('article', {
           attributes: {
             author: 'Dave',
-            date: new Date('2015-06-22')
+            date
           }
         });
 
@@ -34,7 +37,8 @@ describeComponent(
       });
 
       it('shows the date', function() {
-        expect(this.$(`.date:contains(June)`)).to.have.length(1);
+        let expectedDateFormat = formatDate([date]);
+        expect(this.$(`.date:contains(${expectedDateFormat})`)).to.have.length(1);
       });
     });
 

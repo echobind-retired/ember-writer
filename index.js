@@ -4,6 +4,7 @@
 const Funnel = require('broccoli-funnel');
 const MergeTrees = require('broccoli-merge-trees');
 const BlogMarkdownParser = require('./lib/blog-markdown-parser');
+const itemCounts = require('./lib/utils/item-counts');
 const path = require('path');
 const fs = require('fs-extra');
 const _array = require('lodash/array');
@@ -12,21 +13,30 @@ const _string = require('lodash/string');
 module.exports = {
   name: 'ember-writer',
 
+  /**
+   * Stores the config object.
+   * @type {Object}
+   * @property
+   * @public
+   */
+  addonConfig: null,
+
   included(app) {
     if (app.project.pkg['ember-addon'] && !app.project.pkg['ember-addon'].paths) {
       this.blogDirectory = path.resolve(app.project.root, path.join('tests', 'dummy', 'blog'));
     } else {
-      this.blogDirectory = path.join(this.app.project.root, '/blog');
+      this.blogDirectory = path.join(app.project.root, '/blog');
     }
-
-    this.addonConfig = app.project.config(process.env.EMBER_ENV).emberWriter || {};
   },
 
-  config: function(/*environment, appConfig*/) {
+  config: function() {
+    let appConfig = require('./config/ember-writer');
+    let config = getDefaultConfig();
+
+    this.addonConfig = Object.assign(config, appConfig);
+
     return {
-      'emberWriter': {
-        dateFormat: 'MM-DD-YYYY'
-      }
+      emberWriter: this.addonConfig
     };
   },
 
@@ -98,13 +108,13 @@ module.exports = {
   }
 };
 
-function itemCounts(array) {
-  let counts = {};
-
-  array.forEach((thing) => {
-    let count = counts[thing] || 0;
-    counts[thing] = count += 1;
-  });
-
-  return counts;
+/**
+ * The default config for Ember Writer
+ * @return {Object} The config
+ * @public
+ */
+function getDefaultConfig() {
+  return {
+    dateFormat: 'MM-DD-YYYY'
+  };
 }
