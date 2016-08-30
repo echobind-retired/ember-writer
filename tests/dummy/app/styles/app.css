@@ -177,6 +177,11 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   flex: 1;
 }
 
+.author:after {
+  padding: 0 0.5rem 0 0.75rem;
+  content: '-';
+}
+
 /* articles */
 article {
   padding-bottom: 2rem;
