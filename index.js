@@ -9,6 +9,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const _array = require('lodash/array');
 const _string = require('lodash/string');
+const _lang = require('lodash/lang');
 
 module.exports = {
   name: 'ember-writer',
@@ -60,14 +61,17 @@ module.exports = {
 
   postBuild(result) {
     let blogPath = path.join(result.directory, 'api', 'blog');
+    let nonDraftArticles = this._removeDraftArticles();
 
     // posts
-    fs.writeJsonSync(`${blogPath}/posts.json`, this.markdownParser.parsedPosts);
+    fs.writeJsonSync(`${blogPath}/posts.json`, nonDraftArticles);
 
     // tags
-    let tags = this.markdownParser.parsedPosts.reduce((prev, post) => {
-      let tags = post.attributes.tags.split(/,\s*/);
-      return prev.concat(tags);
+    let tags = nonDraftArticles.reduce((prev, article) => {
+      let articleTags = article.attributes.tags;
+      articleTags = _lang.isEmpty(articleTags) ? '' : articleTags;
+      let tokens = articleTags.split(/,\s*/);
+      return prev.concat(tokens);
     }, []);
 
     let tagCounts = itemCounts(tags);
@@ -82,7 +86,7 @@ module.exports = {
     fs.writeJsonSync(`${blogPath}/tags.json`, uniqueTags);
 
     // authors
-    let authors = this.markdownParser.parsedPosts.reduce((prev, post) => {
+    let authors = nonDraftArticles.reduce((prev, post) => {
       return prev.concat(post.attributes.author);
     }, []);
 
@@ -91,7 +95,7 @@ module.exports = {
     let authorData = require(authorDataFile);
     let authorCounts = itemCounts(authors);
 
-    let authorsWithCounts = authors.map((name) => {
+    let authorsWithCounts = Object.keys(authorCounts).map((name) => {
       let author = authorData.find((a) => a.name == name);
 
       if (!author) {
@@ -105,6 +109,23 @@ module.exports = {
     });
 
     fs.writeJsonSync(`${blogPath}/authors.json`, authorsWithCounts);
+  },
+
+  /**
+   * Removes draft articles unless in a development environment.
+   * @return {Array} Articles with published = false
+   * @private
+   */
+  _removeDraftArticles() {
+    let isDevelopment = this.app.env === 'development';
+    let allArticles = this.markdownParser.parsedPosts;
+
+    if (!isDevelopment) {
+      let draftArticles = allArticles.filter((a) => a.attributes.published === false);
+      return _array.difference(allArticles, draftArticles);
+    }
+
+    return allArticles;
   }
 };
 
