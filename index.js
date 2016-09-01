@@ -10,8 +10,9 @@ const fs = require('fs-extra');
 const _array = require('lodash/array');
 const _string = require('lodash/string');
 const _lang = require('lodash/lang');
+const EngineAddon = require('ember-engines/lib/engine-addon');
 
-module.exports = {
+module.exports = EngineAddon.extend({
   name: 'ember-writer',
 
   /**
@@ -127,7 +128,7 @@ module.exports = {
 
     return allArticles;
   }
-};
+});
 
 /**
  * The default config for Ember Writer
