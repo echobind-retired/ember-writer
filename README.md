@@ -18,6 +18,8 @@ Features:
 
 NOTE: This addon requires engines, so your app **must be running Ember 2.8 beta or later**.
 
+We have one known blocker for initial release: See [#30](https://github.com/echobind/ember-writer/issues/30) for details.
+
 #### Install the addon
 ```sh
 ember install ember-writer
@@ -99,7 +101,9 @@ Draft articles are visible in the development environment only.
 Syntax highlighting is provided by highlightjs. Add theme styles to your app (see the dummy app for an example).
 
 ## Customizing templates
-To customize article templates, generate a template of the same name in your application. Note: this addon is currently under heavy development, so expect the template structure to change.
+~~To customize article templates, generate a template of the same name in your application. Note: this addon is currently under heavy development, so expect the template structure to change.~~
+
+**This is currently pending (tracked in [#30](https://github.com/echobind/ember-writer/issues/30)), and is a major blocker for releasing this addon.**
 
 ## License
 
