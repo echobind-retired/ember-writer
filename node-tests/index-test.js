@@ -78,7 +78,7 @@ describe('AddonIndex', function() {
       let dataPath = path.join(tempDir, 'data');
       fs.mkdirsSync(dataPath);
 
-      fs.writeFileSync(path.join(dataPath, 'authors.js'), 'module.exports=[{ name: "Dave" }]');
+      fs.writeFileSync(path.join(dataPath, 'authors.js'), 'module.exports=[{ attributes: { name: "Dave" }}]');
     });
 
     describe('posts.json', function() {
@@ -120,7 +120,7 @@ describe('AddonIndex', function() {
 
         it('does not include draft articles', function() {
           let articles = fs.readJSONSync(`${blogPath}/posts.json`);
-          let draftArticle = articles.find((a) => a.attributes.title === 'Draft Post');
+          let draftArticle = articles.data.find((a) => a.attributes.title === 'Draft Post');
 
           expect(draftArticle).to.be.undefined;
         });
@@ -164,7 +164,7 @@ describe('AddonIndex', function() {
 
         it('includes draft articles', function() {
           let articles = fs.readJSONSync(`${blogPath}/posts.json`);
-          let draftArticle = articles.find((a) => a.attributes.title === 'Draft Post');
+          let draftArticle = articles.data.find((a) => a.attributes.title === 'Draft Post');
 
           expect(draftArticle).to.be.ok;
         });
@@ -208,14 +208,14 @@ describe('AddonIndex', function() {
 
       it('creates tags with post counts', function() {
         let tags = fs.readJSONSync(`${blogPath}/tags.json`);
-        let tagNames = tags.map((t) => t.name);
-        let emberTag = tags.find((t) => t.name === 'ember');
-        let testingTag = tags.find((t) => t.name === 'testing');
+        let tagNames = tags.data.map((t) => t.attributes.name);
+        let emberTag = tags.data.find((t) => t.attributes.name === 'ember');
+        let testingTag = tags.data.find((t) => t.attributes.name === 'testing');
 
-        expect(tags).to.have.length(3);
+        expect(tags.data).to.have.length(3);
         expect(tagNames).to.contain('ember', 'testing', 'cycling');
-        expect(emberTag.postCount).to.equal(1);
-        expect(testingTag.postCount).to.equal(2);
+        expect(emberTag.attributes.postCount).to.equal(1);
+        expect(testingTag.attributes.postCount).to.equal(2);
       });
     });
 
@@ -256,10 +256,10 @@ describe('AddonIndex', function() {
 
       it('creates authors with post counts', function() {
         let authors = fs.readJSONSync(`${blogPath}/authors.json`);
-        let dave = authors.find((a) => a.name === 'Dave');
+        let dave = authors.data.find((a) => a.attributes.name === 'Dave');
 
-        expect(authors).to.have.length(1);
-        expect(dave.postCount).to.equal(2);
+        expect(authors.data).to.have.length(1);
+        expect(dave.attributes.postCount).to.equal(2);
       });
     });
   });
