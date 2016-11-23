@@ -1,0 +1,5 @@
+---
+name: <%= name %>
+---
+
+Oh yeah!

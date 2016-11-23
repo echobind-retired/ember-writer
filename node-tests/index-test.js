@@ -75,10 +75,6 @@ describe('AddonIndex', function() {
       tempDir = temp.mkdirSync('post-build');
       blogPath = path.join(tempDir, 'api', 'blog');
       fs.mkdirsSync(blogPath);
-      let dataPath = path.join(tempDir, 'data');
-      fs.mkdirsSync(dataPath);
-
-      fs.writeFileSync(path.join(dataPath, 'authors.js'), 'module.exports=[{ attributes: { name: "Dave" }}]');
     });
 
     describe('posts.json', function() {
@@ -96,15 +92,23 @@ describe('AddonIndex', function() {
             parsedPosts: [
               {
                 attributes: {
-                  author: 'Dave',
+                  author: 'dave',
                   title: 'Draft Post',
                   published: false
                 }
               },
               {
                 attributes: {
-                  author: 'Dave',
+                  author: 'dave',
                   title: 'Published Post'
+                }
+              }
+            ],
+            parsedAuthors: [
+              {
+                slug: 'dave',
+                attributes: {
+                  name: 'Dave'
                 }
               }
             ]
@@ -140,15 +144,23 @@ describe('AddonIndex', function() {
             parsedPosts: [
               {
                 attributes: {
-                  author: 'Dave',
+                  author: 'dave',
                   title: 'Draft Post',
                   published: false
                 }
               },
               {
                 attributes: {
-                  author: 'Dave',
+                  author: 'dave',
                   title: 'Published Post'
+                }
+              },
+            ],
+            parsedAuthors: [
+              {
+                slug: 'dave',
+                attributes: {
+                  name: 'Dave'
                 }
               }
             ]
@@ -185,14 +197,22 @@ describe('AddonIndex', function() {
           parsedPosts: [
             {
               attributes: {
-                author: 'Dave',
+                author: 'dave',
                 tags: 'ember, testing'
               }
             },
             {
               attributes: {
-                author: 'Dave',
+                author: 'dave',
                 tags: 'testing,cycling'
+              }
+            }
+          ],
+          parsedAuthors: [
+            {
+              slug: 'dave',
+              attributes: {
+                name: 'Dave'
               }
             }
           ]
@@ -233,14 +253,22 @@ describe('AddonIndex', function() {
           parsedPosts: [
             {
               attributes: {
-                author: 'Dave',
+                author: 'dave',
                 tags: 'ember, testing'
               }
             },
             {
               attributes: {
-                author: 'Dave',
+                author: 'dave',
                 tags: 'testing,cycling'
+              }
+            }
+          ],
+          parsedAuthors: [
+            {
+              slug: 'dave',              
+              attributes: {
+                name: 'Dave'
               }
             }
           ]

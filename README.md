@@ -34,21 +34,12 @@ Router.map(function() {
 
 #### Generate a new blog post:
 ```sh
-ember g blog-post "My Amazing Post Title"
+ember g article "My Amazing Post Title"
 ```
 
-#### Add additional writers to `blog/data/authors.js`:
-```js
-/*jshint node:true*/
-
-module.exports = [
-  {
-    name: "Chris Ball",
-    image: "https://www.gravatar.com/avatar/6254dc2b7e4f26b2ab5d05c560834671?s=400",
-    twitter: "cball_",
-    github: "cball"
-  }
-];
+#### Generate a new author:
+```sh
+ember g author "Koolaid Man"
 ```
 
 ## Configuring Ember Writer

@@ -50,7 +50,7 @@ module.exports = EngineAddon.extend({
 
     let blogFiles = new Funnel(this.blogDirectory, {
       destDir: this.addonConfig.namespace,
-      include: ['*.md']
+      include: ['**/*.md']
     });
 
     this.markdownParser = new BlogMarkdownParser(blogFiles, this.addonConfig);
@@ -95,17 +95,18 @@ module.exports = EngineAddon.extend({
   },
 
   _visibleAuthors() {
-    let authorData = require(`${this.blogDirectory}/data/authors`);
+    let authorData = this.markdownParser.parsedAuthors;
+
     let articles = this._visibleArticles();
     let authors = articles.map(item => item.attributes.author);
 
     let postCounts = itemCounts(authors);
 
     return _array.uniq(authors).map(name => {
-      let author = authorData.find((a) => (a.attributes || {}).name === name);
+      let author = authorData.find((a) => a.slug === name);
 
       if (!author) {
-        throw(new Error(`${name} is an author of a post but is not a known author. Please add an entry to \`data/authors.json\` for them.`));
+        throw(new Error(`${name} is an author of a post but is not a known author. Expecting to find an author with slug ${name}`));
       }
 
       return Object.assign({}, author, {
