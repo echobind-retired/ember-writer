@@ -49,7 +49,7 @@ module.exports = EngineAddon.extend({
     }
 
     let blogFiles = new Funnel(this.blogDirectory, {
-      destDir: 'api/blog',
+      destDir: this.addonConfig.namespace,
       include: ['*.md']
     });
 
@@ -61,7 +61,7 @@ module.exports = EngineAddon.extend({
 
   postBuild(result) {
 
-    let blogPath = path.join(result.directory, 'api', 'blog');
+    let blogPath = path.join(result.directory, this.addonConfig.namespace);
 
     let serializer = new Serializer({
       articles: this._visibleArticles(),
@@ -125,6 +125,7 @@ module.exports = EngineAddon.extend({
  */
 function getDefaultConfig() {
   return {
-    dateFormat: 'MM-DD-YYYY'
+    dateFormat: 'MM-DD-YYYY',
+    namespace: 'api/blog'
   };
 }
