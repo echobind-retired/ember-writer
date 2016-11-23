@@ -64,11 +64,11 @@ module.exports = EngineAddon.extend({
     let blogPath = path.join(result.directory, this.addonConfig.namespace);
 
     let serializer = new Serializer({
-      articles: this._visibleArticles(),
+      posts: this._visibleArticles(),
       authors: this._visibleAuthors()
     });
 
-    writeJSON('posts', serializer.articlesToJSONAPI());
+    writeJSON('posts', serializer.postsToJSONAPI());
     writeJSON('tags', serializer.tagsToJSONAPI());
     writeJSON('authors', serializer.authorsToJSONAPI());
 

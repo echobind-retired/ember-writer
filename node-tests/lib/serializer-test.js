@@ -5,10 +5,10 @@ const expect = require('chai').expect;
 const Serializer = require('../../lib/serializer');
 
 describe('Serializer', function() {
-  let serializer, articles, authors, tags;
+  let serializer, posts, authors, tags;
   beforeEach(function() {
     serializer = new Serializer({
-      articles: [
+      posts: [
         {
           attributes: {
             title: 'hello world',
@@ -29,14 +29,14 @@ describe('Serializer', function() {
         }
       ]
     });
-    articles = serializer.articlesToJSONAPI();
+    posts = serializer.postsToJSONAPI();
     authors = serializer.authorsToJSONAPI();
     tags = serializer.tagsToJSONAPI();
   });
-  it('generates articles in JSONAPI', function() {
-    expect(articles.data[0]).to.deep.equal({
+  it('generates posts in JSONAPI', function() {
+    expect(posts.data[0]).to.deep.equal({
       id: 'hello-world',
-      type: 'article',
+      type: 'post',
       attributes: {
         slug: 'hello-world',
         title: 'hello world',
