@@ -5,7 +5,7 @@ const stringUtil = require('ember-cli-string-utils');
 const moment = require('moment');
 
 module.exports = {
-  description: 'Generates a new blog article',
+  description: 'Generates a new blog author',
 
   fileMapTokens: function() {
     return {
