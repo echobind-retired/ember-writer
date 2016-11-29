@@ -3,13 +3,9 @@
 
 const Funnel = require('broccoli-funnel');
 const MergeTrees = require('broccoli-merge-trees');
-const BlogMarkdownParser = require('./lib/blog-markdown-parser');
 const path = require('path');
-const fs = require('fs-extra');
-const _array = require('lodash/array');
 const EngineAddon = require('ember-engines/lib/engine-addon');
-const Serializer = require('./lib/serializer');
-const itemCounts = require('./lib/utils/item-counts');
+const Blog = require('./lib/blog');
 
 module.exports = EngineAddon.extend({
   name: 'ember-writer',
@@ -48,74 +44,17 @@ module.exports = EngineAddon.extend({
       trees.push(tree);
     }
 
-    let blogFiles = new Funnel(this.blogDirectory, {
+    let blog = new Blog(this.blogDirectory, this.app.env === 'production');
+
+    let blogApi = new Funnel(blog.toTree(), {
+      src: '/',
       destDir: this.addonConfig.namespace,
-      include: ['**/*.md']
+      include: ['**/*.json']
     });
 
-    this.markdownParser = new BlogMarkdownParser(blogFiles, this.addonConfig);
-    trees.push(this.markdownParser);
+    trees.push(blogApi);
 
     return new MergeTrees(trees);
-  },
-
-  postBuild(result) {
-
-    let blogPath = path.join(result.directory, this.addonConfig.namespace);
-
-    let serializer = new Serializer({
-      posts: this._visibleArticles(),
-      authors: this._visibleAuthors()
-    });
-
-    writeJSON('posts', serializer.postsToJSONAPI());
-    writeJSON('tags', serializer.tagsToJSONAPI());
-    writeJSON('authors', serializer.authorsToJSONAPI());
-
-    function writeJSON(filename, data) {
-      fs.writeJsonSync(path.join(blogPath, `${filename}.json`), data);
-    }
-  },
-
-  /**
-   * Removes draft articles unless in a development environment.
-   * @return {Array} Articles with published = false
-   * @private
-   */
-  _visibleArticles() {
-    let isDevelopment = this.app.env === 'development';
-    let allArticles = this.markdownParser.parsedPosts;
-
-    if (!isDevelopment) {
-      let draftArticles = allArticles.filter((a) => a.attributes.published === false);
-      return _array.difference(allArticles, draftArticles);
-    }
-
-    return allArticles;
-  },
-
-  _visibleAuthors() {
-    let authorData = this.markdownParser.parsedAuthors;
-
-    let articles = this._visibleArticles();
-    let authors = articles.map(item => item.attributes.author);
-
-    let postCounts = itemCounts(authors);
-
-    return _array.uniq(authors).map(name => {
-      let author = authorData.find((a) => a.slug === name);
-
-      if (!author) {
-        throw(new Error(`${name} is an author of a post but is not a known author. Expecting to find an author with slug ${name}`));
-      }
-
-      return Object.assign({}, author, {
-        attributes: Object.assign({}, author.attributes, {
-          postCount: postCounts[name]
-        })
-      });
-    });
-
   }
 });
 

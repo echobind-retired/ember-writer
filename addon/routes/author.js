@@ -7,7 +7,7 @@ const {
 
 export default Route.extend({
   store: service(),
-  model() {
-    return this.get('store').findAll('author');
+  model({ id }) {
+    return this.get('store').findRecord('author', id);
   }
 });

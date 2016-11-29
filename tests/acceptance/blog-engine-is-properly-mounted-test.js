@@ -28,7 +28,7 @@ describe('Acceptance: Blog engine is properly mounted', function() {
 
     it('shows a list of articles', function() {
       let posts = find('article');
-      expect(posts).to.have.length(2);
+      expect(posts).to.have.length(3);
     });
 
     it('only shows the post summary', function() {

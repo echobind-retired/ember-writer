@@ -1,8 +1,13 @@
+import Ember from 'ember';
 import Route from 'ember-route';
-import request from 'ember-ajax/request';
+
+const {
+  inject: { service }
+} = Ember;
 
 export default Route.extend({
-  model({ slug }) {
-    return request(`/api/blog/posts/${slug}.json`);
+  store: service(),
+  model({ id }) {
+    return this.get('store').findRecord('post', id);
   }
 });

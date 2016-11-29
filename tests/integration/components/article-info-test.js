@@ -23,10 +23,8 @@ describeComponent(
 
       beforeEach(function() {
         this.set('article', {
-          attributes: {
-            author: 'Dave',
-            date
-          }
+          author: { name: 'Dave' },
+          date
         });
 
         this.render(hbs`{{article-info article=article}}`);

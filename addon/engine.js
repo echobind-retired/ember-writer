@@ -5,7 +5,12 @@ import loadInitializers from 'ember-load-initializers';
 const modulePrefix = 'ember-writer';
 const Eng = Engine.extend({
   modulePrefix,
-  Resolver
+  Resolver,
+  dependencies: {
+    services: [
+      'store'
+    ]
+  }
 });
 
 loadInitializers(Eng, modulePrefix);
