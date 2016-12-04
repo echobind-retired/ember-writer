@@ -5,7 +5,7 @@ const Funnel = require('broccoli-funnel');
 const MergeTrees = require('broccoli-merge-trees');
 const path = require('path');
 const EngineAddon = require('ember-engines/lib/engine-addon');
-const Blog = require('./lib/blog');
+const Plugin = require('./lib/plugin');
 
 module.exports = EngineAddon.extend({
   name: 'ember-writer',
@@ -26,7 +26,7 @@ module.exports = EngineAddon.extend({
     }
   },
 
-  config: function() {
+  config() {
     let appConfig = require('./config/ember-writer');
     let config = getDefaultConfig();
 
@@ -44,15 +44,17 @@ module.exports = EngineAddon.extend({
       trees.push(tree);
     }
 
-    let blog = new Blog(this.blogDirectory, this.app.env === 'production');
+    let plugin = new Plugin([this.blogDirectory], {
+      isProduction: this.app.env === 'production'
+    });
 
-    let blogApi = new Funnel(blog.toTree(), {
+    let api = new Funnel(plugin, {
       src: '/',
       destDir: this.addonConfig.namespace,
       include: ['**/*.json']
     });
 
-    trees.push(blogApi);
+    trees.push(api);
 
     return new MergeTrees(trees);
   }
