@@ -2,7 +2,7 @@
 title: Move your Ember Tests to Mocha
 date: 2016-08-18 13:27 UTC
 tags: ember, mocha
-author: Chris Ball
+author: chris-ball
 ---
 
 ember-cli ships with QUnit as the default testing framework. If you'd like to move to Mocha here's a quick reference on how to do so. READMORE

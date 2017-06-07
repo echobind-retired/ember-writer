@@ -3,16 +3,10 @@
 
 const Funnel = require('broccoli-funnel');
 const MergeTrees = require('broccoli-merge-trees');
-const BlogMarkdownParser = require('./lib/blog-markdown-parser');
-const itemCounts = require('./lib/utils/item-counts');
 const path = require('path');
-const fs = require('fs-extra');
-const _array = require('lodash/array');
-const _string = require('lodash/string');
-const _lang = require('lodash/lang');
-const EngineAddon = require('ember-engines/lib/engine-addon');
+const Plugin = require('./lib/plugin');
 
-module.exports = EngineAddon.extend({
+module.exports = {
   name: 'ember-writer',
 
   /**
@@ -31,7 +25,7 @@ module.exports = EngineAddon.extend({
     }
   },
 
-  config: function() {
+  config() {
     let appConfig = require('./config/ember-writer');
     let config = getDefaultConfig();
 
@@ -49,86 +43,21 @@ module.exports = EngineAddon.extend({
       trees.push(tree);
     }
 
-    let blogFiles = new Funnel(this.blogDirectory, {
-      destDir: 'api/blog',
-      include: ['*.md']
+    let plugin = new Plugin([this.blogDirectory], {
+      isProduction: this.app.env === 'production'
     });
 
-    this.markdownParser = new BlogMarkdownParser(blogFiles, this.addonConfig);
-    trees.push(this.markdownParser);
+    let api = new Funnel(plugin, {
+      src: '/',
+      destDir: this.addonConfig.namespace,
+      include: ['**/*.json']
+    });
+
+    trees.push(api);
 
     return new MergeTrees(trees);
-  },
-
-  postBuild(result) {
-    let blogPath = path.join(result.directory, 'api', 'blog');
-    let nonDraftArticles = this._removeDraftArticles();
-
-    // posts
-    fs.writeJsonSync(`${blogPath}/posts.json`, nonDraftArticles);
-
-    // tags
-    let tags = nonDraftArticles.reduce((prev, article) => {
-      let articleTags = article.attributes.tags;
-      articleTags = _lang.isEmpty(articleTags) ? '' : articleTags;
-      let tokens = articleTags.split(/,\s*/);
-      return prev.concat(tokens);
-    }, []);
-
-    let tagCounts = itemCounts(tags);
-
-    let uniqueTags = _array.uniq(tags).map((tag) => {
-      return {
-        name: tag,
-        postCount: tagCounts[tag]
-      };
-    });
-
-    fs.writeJsonSync(`${blogPath}/tags.json`, uniqueTags);
-
-    // authors
-    let authors = nonDraftArticles.reduce((prev, post) => {
-      return prev.concat(post.attributes.author);
-    }, []);
-
-    // add post counts to author data
-    let authorDataFile = `${this.blogDirectory}/data/authors`;
-    let authorData = require(authorDataFile);
-    let authorCounts = itemCounts(authors);
-
-    let authorsWithCounts = Object.keys(authorCounts).map((name) => {
-      let author = authorData.find((a) => a.name == name);
-
-      if (!author) {
-        throw(new Error(`${name} is an author of a post but is not a known author. Please add an entry to \`data/authors.json\` for them.`));
-        return;
-      }
-
-      author.postCount = authorCounts[name];
-
-      return author;
-    });
-
-    fs.writeJsonSync(`${blogPath}/authors.json`, authorsWithCounts);
-  },
-
-  /**
-   * Removes draft articles unless in a development environment.
-   * @return {Array} Articles with published = false
-   * @private
-   */
-  _removeDraftArticles() {
-    let isDevelopment = this.app.env === 'development';
-    let allArticles = this.markdownParser.parsedPosts;
-
-    if (!isDevelopment) {
-      let draftArticles = allArticles.filter((a) => a.attributes.published === false);
-      return _array.difference(allArticles, draftArticles);
-    }
-
-    return allArticles;
   }
-});
+};
 
 /**
  * The default config for Ember Writer
@@ -137,6 +66,7 @@ module.exports = EngineAddon.extend({
  */
 function getDefaultConfig() {
   return {
-    dateFormat: 'MM-DD-YYYY'
+    dateFormat: 'MM-DD-YYYY',
+    namespace: 'api/blog'
   };
 }
