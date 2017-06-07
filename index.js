@@ -4,10 +4,9 @@
 const Funnel = require('broccoli-funnel');
 const MergeTrees = require('broccoli-merge-trees');
 const path = require('path');
-const EngineAddon = require('ember-engines/lib/engine-addon');
 const Plugin = require('./lib/plugin');
 
-module.exports = EngineAddon.extend({
+module.exports = {
   name: 'ember-writer',
 
   /**
@@ -58,7 +57,7 @@ module.exports = EngineAddon.extend({
 
     return new MergeTrees(trees);
   }
-});
+};
 
 /**
  * The default config for Ember Writer

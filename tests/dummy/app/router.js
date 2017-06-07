@@ -1,5 +1,9 @@
-import EmberRouter from 'ember-router';
+import Ember from 'ember';
 import config from './config/environment';
+
+const {
+  Router: EmberRouter
+} = Ember;
 
 const Router = EmberRouter.extend({
   location: config.locationType,
@@ -7,7 +11,13 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.mount('ember-writer', { path: 'blog' });
+  this.route('blog', function() {
+    this.route('topics');
+    this.route('topic', { path: 'topics/:id' });
+    this.route('authors');
+    this.route('author', { path: 'authors/:id' });
+    this.route('post', { path: ':id' });
+  });
 });
 
 export default Router;
